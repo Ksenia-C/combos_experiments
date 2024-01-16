@@ -94,7 +94,6 @@ int data_client_ask_for_files(ask_for_files_t params)
 
     while (1)
     {
-        fprintf(log_fd, "%g\n", sg4::Engine::get_clock());
 
         dclient_info->ask_for_files_mutex->lock();
         if (dclient_info->finish)
@@ -123,6 +122,8 @@ int data_client_ask_for_files(ask_for_files_t params)
 
         if (storage >= 0)
         {
+            fprintf(log_fd, "%g\n", sg4::Engine::get_clock());
+
             // backoff = 300;
 
             // ASK FOR WORKUNITS -> DATA CLIENT SERVER
