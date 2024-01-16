@@ -122,7 +122,6 @@ int data_client_ask_for_files(ask_for_files_t params)
 
         if (storage >= 0)
         {
-            fprintf(log_fd, "%g\n", sg4::Engine::get_clock());
 
             // backoff = 300;
 

@@ -311,6 +311,8 @@ int client_work_fetch(client_t client)
     while (ceil(sg4::Engine::get_clock()) < maxtt)
     {
 
+        fprintf(log_fd, "%g\n", sg4::Engine::get_clock());
+
         /* Wait when the client is suspended */
         client->ask_for_work_mutex->lock();
         while (client->suspended)
