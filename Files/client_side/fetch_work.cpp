@@ -393,23 +393,26 @@ FIXME: http://www.boinc-wiki.info/Work-Fetch_Policy */
             if (sg4::Engine::get_clock() >= (maxtt - WORK_FETCH_PERIOD))
                 break;
 
+            // sg4::this_actor::sleep_for(10);
             std::unique_lock lock(*client->work_fetch_mutex);
-            if (!selected_proj || !client->deadline_missed.empty() || work_percentage == 0)
-            {
-                // printf("EXIT 1: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
-                // sg4::ConditionVariableimedwait(client->work_fetch_cond, client->work_fetch_mutex, max(0, max-sg4::Engine::get_clock()));
-                client->work_fetch_cond->wait(lock);
+            client->work_fetch_cond->wait_for(lock, 10);
 
-                // printf("SALGO DE EXIT 1: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
-            }
-            else
-            {
-                // printf("EXIT 2: remaining %f time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
+            // if (!selected_proj || !client->deadline_missed.empty() || work_percentage == 0)
+            // {
+            //     // printf("EXIT 1: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
+            //     // sg4::ConditionVariableimedwait(client->work_fetch_cond, client->work_fetch_mutex, max(0, max-sg4::Engine::get_clock()));
+            //     client->work_fetch_cond->wait(lock);
 
-                client->work_fetch_cond->wait_for(lock, WORK_FETCH_PERIOD);
+            //     // printf("SALGO DE EXIT 1: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
+            // }
+            // else
+            // {
+            //     // printf("EXIT 2: remaining %f time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
 
-                // printf("SALGO DE EXIT 2: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
-            }
+            //     client->work_fetch_cond->wait_for(lock, WORK_FETCH_PERIOD);
+
+            //     // printf("SALGO DE EXIT 2: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
+            // }
         }
         catch (std::exception &e)
         {
