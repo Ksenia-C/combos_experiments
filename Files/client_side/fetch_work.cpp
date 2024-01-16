@@ -191,7 +191,15 @@ static int client_ask_for_work(client_t client, ProjectInstanceOnClient *proj, d
     auto &serve_nm_ml = project.scheduling_servers[uniform_int(0, project.nscheduling_servers - 1)];
 
     auto where = sg4::Mailbox::by_name(serve_nm_ml);
-    where->put(sswork_request, REQUEST_SIZE);
+
+    {
+        double tmp1 = sg4::Engine::get_clock();
+
+        where->put(sswork_request, REQUEST_SIZE);
+        double tmp2 = sg4::Engine::get_clock();
+
+        fprintf(log_fd, "%g\n", tmp2 - tmp1);
+    }
 
     // Receive reply from scheduling server
     AssignedResult *sswork_reply = sg4::Mailbox::by_name(proj->answer_mailbox)->get<AssignedResult>(); // Get work
@@ -311,8 +319,6 @@ int client_work_fetch(client_t client)
     while (ceil(sg4::Engine::get_clock()) < maxtt)
     {
 
-        fprintf(log_fd, "%g\n", sg4::Engine::get_clock());
-
         /* Wait when the client is suspended */
         client->ask_for_work_mutex->lock();
         while (client->suspended)
@@ -393,26 +399,24 @@ FIXME: http://www.boinc-wiki.info/Work-Fetch_Policy */
             if (sg4::Engine::get_clock() >= (maxtt - WORK_FETCH_PERIOD))
                 break;
 
-            // sg4::this_actor::sleep_for(10);
             std::unique_lock lock(*client->work_fetch_mutex);
-            client->work_fetch_cond->wait_for(lock, 10);
 
-            // if (!selected_proj || !client->deadline_missed.empty() || work_percentage == 0)
-            // {
-            //     // printf("EXIT 1: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
-            //     // sg4::ConditionVariableimedwait(client->work_fetch_cond, client->work_fetch_mutex, max(0, max-sg4::Engine::get_clock()));
-            //     client->work_fetch_cond->wait(lock);
+            if (!selected_proj || !client->deadline_missed.empty() || work_percentage == 0)
+            {
+                // printf("EXIT 1: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
+                // sg4::ConditionVariableimedwait(client->work_fetch_cond, client->work_fetch_mutex, max(0, max-sg4::Engine::get_clock()));
+                client->work_fetch_cond->wait(lock);
 
-            //     // printf("SALGO DE EXIT 1: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
-            // }
-            // else
-            // {
-            //     // printf("EXIT 2: remaining %f time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
+                // printf("SALGO DE EXIT 1: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
+            }
+            else
+            {
+                // printf("EXIT 2: remaining %f time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
 
-            //     client->work_fetch_cond->wait_for(lock, WORK_FETCH_PERIOD);
+                client->work_fetch_cond->wait_for(lock, WORK_FETCH_PERIOD);
 
-            //     // printf("SALGO DE EXIT 2: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
-            // }
+                // printf("SALGO DE EXIT 2: remaining %f, time %f\n", max-sg4::Engine::get_clock(), sg4::Engine::get_clock());
+            }
         }
         catch (std::exception &e)
         {
