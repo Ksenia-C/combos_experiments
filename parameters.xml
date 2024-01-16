@@ -40,7 +40,7 @@
 		<ndata_clients>100</ndata_clients>		<!-- Number of data clients of the group -->
 		<connection_interval>1</connection_interval>	<!-- Connection interval -->	
 		<scheduling_interval>3600</scheduling_interval>	<!-- Scheduling interval -->
-		<gbw>10Mbps</gbw>				<!-- Cluster link bandwidth in bps -->
+		<gbw>50Mbps</gbw>				<!-- Cluster link bandwidth in bps -->
 		<glatency>7.3ms</glatency>			<!-- Cluster link latency -->
 		<traces_file>/Traces/lhc/unsorted</traces_file>	<!-- Host power traces file -->
 		<max_speed>117.71</max_speed>			<!-- Maximum host speed in GFlops -->

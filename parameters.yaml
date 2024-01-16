@@ -34,7 +34,7 @@ client_side:
         ndata_clients: 100
         connection_interval: 1
         scheduling_interval: 3600
-        gbw: 10Mbps
+        gbw: 50Mbps
         glatency: 7.3ms
         traces_file: /Traces/lhc/unsorted
         max_speed: 117.71
