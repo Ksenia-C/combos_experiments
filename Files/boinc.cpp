@@ -52,6 +52,7 @@ namespace xbt = simgrid::xbt;
 
 XBT_LOG_NEW_DEFAULT_CATEGORY(boinc_simulator, "Messages specific for this boinc simulator");
 
+// #define WARM_UP_TIME 20			// Warm up time in hours
 #define MAX_SHORT_TERM_DEBT 86400
 #define MAX_TIMEOUT_SERVER 86400 * 365 // One year without client activity, only to finish simulation for a while
 // #define WORK_FETCH_PERIOD 60           // Work fetch period
@@ -1070,9 +1071,9 @@ void init_global_parameters(const parameters::Config &config)
     MAX_SIMULATED_TIME = config.simulation_time;
     WARM_UP_TIME = config.warm_up_time;
 
-    double maxtt = (MAX_SIMULATED_TIME + WARM_UP_TIME) * 3600;
-    double maxst = (MAX_SIMULATED_TIME) * 3600;
-    double maxwt = (WARM_UP_TIME) * 3600;
+    maxtt = (MAX_SIMULATED_TIME + WARM_UP_TIME) * 3600;
+    maxst = (MAX_SIMULATED_TIME) * 3600;
+    maxwt = (WARM_UP_TIME) * 3600;
 }
 
 /* Main function */
@@ -1087,6 +1088,13 @@ int main(int argc, char *argv[])
     {
         printf("Usage: %s PLATFORM_FILE DEPLOYMENT_FILE PARAMETERS_AS_YAML_FILE \n", argv[0]);
         printf("Example: %s platform.xml deloyment.xml parameters.yaml\n", argv[0]);
+        exit(1);
+    }
+
+    log_fd = fopen("log_save.log", "w");
+    if (log_fd == NULL)
+    {
+        printf("files to open file");
         exit(1);
     }
 

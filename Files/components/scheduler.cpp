@@ -83,6 +83,7 @@ int scheduling_server_requests(int argc, char *argv[])
     sg4::Mailbox *mailbox = sg4::Mailbox::by_name(sserver_info->server_name);
     while (1)
     {
+        fprintf(log_fd, "%g\n", sg4::Engine::get_clock());
         // Receive message
         auto msg = mailbox->get<SchedulingServerMessage>();
 

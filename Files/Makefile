@@ -1,5 +1,8 @@
 BIN_FILES  = create_platform create_deployment
 
+INSTALL_PATH = /opt/simgrid
+
+
 CC = gcc
 
 CPPFLAGS = -I$(INSTALL_PATH)/include #-D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
