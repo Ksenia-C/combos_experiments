@@ -863,6 +863,13 @@ static client_t client_new(int argc, char *argv[])
             aux = SharedDatabase::_group_info[group_number].max_power;
         else if (aux < SharedDatabase::_group_info[group_number].min_power)
             aux = SharedDatabase::_group_info[group_number].min_power;
+
+        fprintf(log_fd, "%g\n", aux);
+    }
+    else
+    {
+        // std::cout << "from file" << std::endl;
+        fprintf(log_fd, "%g\n", aux);
     }
 
     client->power = (int64_t)(aux * 1000000000.0);
@@ -1102,6 +1109,13 @@ int main(int argc, char *argv[])
     {
         printf("Usage: %s PLATFORM_FILE DEPLOYMENT_FILE PARAMETERS_AS_YAML_FILE \n", argv[0]);
         printf("Example: %s platform.xml deloyment.xml parameters.yaml\n", argv[0]);
+        exit(1);
+    }
+
+    log_fd = fopen("log_save.log", "w");
+    if (log_fd == NULL)
+    {
+        printf("files to open file");
         exit(1);
     }
 

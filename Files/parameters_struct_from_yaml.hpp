@@ -78,9 +78,6 @@ namespace parameters
         int pv_distri;
         double pa_param;
         double pb_param;
-        int st_distri;
-        double sa_param;
-        double sb_param;
         int db_distri;
         double da_param;
         double db_param;
@@ -90,12 +87,7 @@ namespace parameters
         int nv_distri;
         double na_param;
         double nb_param;
-        int xv_distri;
-        double xa_param;
-        double xb_param;
-        int yv_distri;
-        double ya_param;
-        double yb_param;
+
         int att_projs;
         std::vector<GroupProject> gprojects;
     };
@@ -224,9 +216,6 @@ int g_total_number_ordinary_clients = (g_total_number_clients - g_total_number_d
             emitter << YAML::Key << "pv_distri" << YAML::Value << group.pv_distri;
             emitter << YAML::Key << "pa_param" << YAML::Value << group.pa_param;
             emitter << YAML::Key << "pb_param" << YAML::Value << group.pb_param;
-            emitter << YAML::Key << "st_distri" << YAML::Value << group.st_distri;
-            emitter << YAML::Key << "sa_param" << YAML::Value << group.sa_param;
-            emitter << YAML::Key << "sb_param" << YAML::Value << group.sb_param;
             emitter << YAML::Key << "db_distri" << YAML::Value << group.db_distri;
             emitter << YAML::Key << "da_param" << YAML::Value << group.da_param;
             emitter << YAML::Key << "db_param" << YAML::Value << group.db_param;
@@ -236,12 +225,7 @@ int g_total_number_ordinary_clients = (g_total_number_clients - g_total_number_d
             emitter << YAML::Key << "nv_distri" << YAML::Value << group.nv_distri;
             emitter << YAML::Key << "na_param" << YAML::Value << group.na_param;
             emitter << YAML::Key << "nb_param" << YAML::Value << group.nb_param;
-            emitter << YAML::Key << "xv_distri" << YAML::Value << group.xv_distri;
-            emitter << YAML::Key << "xa_param" << YAML::Value << group.xa_param;
-            emitter << YAML::Key << "xb_param" << YAML::Value << group.xb_param;
-            emitter << YAML::Key << "yv_distri" << YAML::Value << group.yv_distri;
-            emitter << YAML::Key << "ya_param" << YAML::Value << group.ya_param;
-            emitter << YAML::Key << "yb_param" << YAML::Value << group.yb_param;
+
             emitter << YAML::Key << "att_projs" << YAML::Value << group.att_projs;
             emitter << YAML::Key << "gprojects" << YAML::Value << YAML::BeginSeq;
 
@@ -335,15 +319,12 @@ int g_total_number_ordinary_clients = (g_total_number_clients - g_total_number_d
                 group.scheduling_interval = groupNode["scheduling_interval"].as<int>();
                 group.gbw = groupNode["gbw"].as<std::string>();
                 group.glatency = groupNode["glatency"].as<std::string>();
-                group.traces_file = groupNode["traces_file"].as<std::string>();
+                // group.traces_file = groupNode["traces_file"].as<std::string>();
                 group.max_speed = groupNode["max_speed"].as<double>();
                 group.min_speed = groupNode["min_speed"].as<double>();
                 group.pv_distri = groupNode["pv_distri"].as<int>();
                 group.pa_param = groupNode["pa_param"].as<double>();
                 group.pb_param = groupNode["pb_param"].as<double>();
-                group.st_distri = groupNode["st_distri"].as<int>();
-                group.sa_param = groupNode["sa_param"].as<double>();
-                group.sb_param = groupNode["sb_param"].as<double>();
                 group.db_distri = groupNode["db_distri"].as<int>();
                 group.da_param = groupNode["da_param"].as<double>();
                 group.db_param = groupNode["db_param"].as<double>();
@@ -353,12 +334,6 @@ int g_total_number_ordinary_clients = (g_total_number_clients - g_total_number_d
                 group.nv_distri = groupNode["nv_distri"].as<int>();
                 group.na_param = groupNode["na_param"].as<double>();
                 group.nb_param = groupNode["nb_param"].as<double>();
-                group.xv_distri = groupNode["xv_distri"].as<int>();
-                group.xa_param = groupNode["xa_param"].as<double>();
-                group.xb_param = groupNode["xb_param"].as<double>();
-                group.yv_distri = groupNode["yv_distri"].as<int>();
-                group.ya_param = groupNode["ya_param"].as<double>();
-                group.yb_param = groupNode["yb_param"].as<double>();
                 group.att_projs = groupNode["att_projs"].as<int>();
 
                 const YAML::Node &gprojectsNode = groupNode["gprojects"];

@@ -30,21 +30,18 @@ server_side:
 client_side:
     n_groups: 1
     groups:
-      - n_clients: 1000
+      - n_clients: 8910
         ndata_clients: 100
-        connection_interval: 1
+        connection_interval: 60
         scheduling_interval: 3600
-        gbw: 10Mbps
+        gbw: 50Mbps
         glatency: 7.3ms
         traces_file: /Traces/lhc/unsorted
         max_speed: 117.71
         min_speed: 0.07
         pv_distri: 5
-        pa_param: 0.1734
+        pa_param: 0.0534
         pb_param: -1
-        st_distri: 5
-        sa_param: 0.0001
-        sb_param: -1
         db_distri: 5
         da_param: 0.0001
         db_param: -1
@@ -54,12 +51,6 @@ client_side:
         nv_distri: 2
         na_param: 2.444
         nb_param: -0.586
-        xv_distri: 0
-        xa_param: 0.393
-        xb_param: 2.964
-        yv_distri: 2
-        ya_param: 2.844
-        yb_param: -0.586
         att_projs: 1
         gprojects:
           - pnumber: 0

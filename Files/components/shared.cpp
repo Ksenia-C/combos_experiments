@@ -9,6 +9,7 @@ int WARM_UP_TIME = 20;
 double maxtt = (MAX_SIMULATED_TIME + WARM_UP_TIME) * 3600;
 double maxst = (MAX_SIMULATED_TIME) * 3600;
 double maxwt = (WARM_UP_TIME) * 3600;
+FILE *log_fd = nullptr;
 
 ProjectDatabase SharedDatabase::_pdatabase = {};     // Initialize the static member
 sserver_t SharedDatabase::_sserver_info = nullptr;   // Scheduling servers information

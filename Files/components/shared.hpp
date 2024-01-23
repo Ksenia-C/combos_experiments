@@ -21,7 +21,7 @@ extern int g_total_number_ordinary_clients;
 extern double maxtt; // Total simulation time in seconds
 extern double maxst; // Simulation time in seconds
 extern double maxwt; // Warm up time in seconds
-
+extern FILE *log_fd;
 class SharedDatabase
 {
 public:

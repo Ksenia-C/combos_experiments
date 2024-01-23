@@ -350,6 +350,8 @@ int client_work_fetch(client_t client)
         {
             // printf("Selected project(%s) shortfall %lf %d\n", selected_proj->name, selected_proj->shortfall, selected_proj->shortfall > 0);
             /* prrs = sum_priority, all projects are potentially runnable */
+            // ksenia: i don't understand why [client->total_shortfall / client->sum_priority] not
+            // [client->total_shortfall / client->sum_priority * selected_proj->priority] for instance
             work_percentage = std::max(selected_proj->shortfall, client->total_shortfall / client->sum_priority);
             // printf("%s -> work_percentage: %f\n", selected_proj->name, work_percentage); // SAUL
             // printf("Heap size: %d\n", heap_size(client->deadline_missed)); // SAUL
