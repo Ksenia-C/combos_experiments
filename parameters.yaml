@@ -45,12 +45,12 @@ client_side:
         db_distri: 5
         da_param: 0.0001
         db_param: -1
-        av_distri: 0
-        aa_param: 0.393
-        ab_param: 2.964
-        nv_distri: 2
-        na_param: 2.444
-        nb_param: -0.586
+        av_distri: 1
+        aa_param: 0.357
+        ab_param: 43.652
+        nv_distri: 8
+        na_param: 0.338,0.390,0.272
+        nb_param: 0.029,30.121,1.069
         att_projs: 1
         gprojects:
           - pnumber: 0

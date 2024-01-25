@@ -85,8 +85,8 @@ namespace parameters
         double aa_param;
         double ab_param;
         int nv_distri;
-        double na_param;
-        double nb_param;
+        std::string na_param;
+        std::string nb_param;
 
         int att_projs;
         std::vector<GroupProject> gprojects;
@@ -332,8 +332,8 @@ int g_total_number_ordinary_clients = (g_total_number_clients - g_total_number_d
                 group.aa_param = groupNode["aa_param"].as<double>();
                 group.ab_param = groupNode["ab_param"].as<double>();
                 group.nv_distri = groupNode["nv_distri"].as<int>();
-                group.na_param = groupNode["na_param"].as<double>();
-                group.nb_param = groupNode["nb_param"].as<double>();
+                group.na_param = groupNode["na_param"].as<std::string>();
+                group.nb_param = groupNode["nb_param"].as<std::string>();
                 group.att_projs = groupNode["att_projs"].as<int>();
 
                 const YAML::Node &gprojectsNode = groupNode["gprojects"];

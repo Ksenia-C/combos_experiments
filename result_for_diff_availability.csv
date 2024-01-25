@@ -1,0 +1,71 @@
+source,FLOPS
+default,163
+default,158
+default,None
+default,152
+default,166
+default,177
+default,150
+default,170
+default,157
+default,162
+seti cluster 1,169
+seti cluster 1,None
+seti cluster 1,172
+seti cluster 1,140
+seti cluster 1,None
+seti cluster 1,153
+seti cluster 1,153
+seti cluster 1,134
+seti cluster 1,165
+seti cluster 1,168
+seti cluster 2,None
+seti cluster 2,180
+seti cluster 2,173
+seti cluster 2,150
+seti cluster 2,None
+seti cluster 2,178
+seti cluster 2,162
+seti cluster 2,183
+seti cluster 2,149
+seti cluster 2,198
+seti cluster 3,135
+seti cluster 3,167
+seti cluster 3,None
+seti cluster 3,135
+seti cluster 3,166
+seti cluster 3,None
+seti cluster 3,172
+seti cluster 3,None
+seti cluster 3,149
+seti cluster 3,148
+seti cluster 4,166
+seti cluster 4,144
+seti cluster 4,168
+seti cluster 4,145
+seti cluster 4,158
+seti cluster 4,162
+seti cluster 4,173
+seti cluster 4,165
+seti cluster 4,133
+seti cluster 4,170
+seti cluster 5,158
+seti cluster 5,None
+seti cluster 5,178
+seti cluster 5,155
+seti cluster 5,169
+seti cluster 5,None
+seti cluster 5,167
+seti cluster 5,170
+seti cluster 5,163
+seti cluster 5,172
+seti cluster 6,141
+seti cluster 6,156
+seti cluster 6,156
+seti cluster 6,160
+seti cluster 6,156
+seti cluster 6,151
+seti cluster 6,165
+seti cluster 6,180
+seti cluster 6,144
+seti cluster 6,None

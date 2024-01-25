@@ -1123,6 +1123,7 @@ int main(int argc, char *argv[])
     init_global_parameters(config);
 
     seed(clock());
+    // seed(123456778);
 
     _total_power = 0;
     _total_available = 0;

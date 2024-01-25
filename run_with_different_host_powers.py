@@ -1,4 +1,4 @@
-# write parameters.xml file with two projects, gather output of simulator and get tasks executed successfully and make plot 
+# write parameters.xml file, gather output of simulator and save FLOPS into file for each hosts' power distribution
 
 proj1 = """
 <sproject>
@@ -29,55 +29,6 @@ proj1 = """
 	<sproject/>
 """
 
-prolog = """
-<simulation_time>100</simulation_time>				<!-- Simulation time in hours  -->
-<warm_up_time>20</warm_up_time>				<!-- Warm up time in hours -->
-
-<!-- Server side -->
-<server_side>
-	<n_projects>1</n_projects>				<!-- Number of projects -->
-"""
-middlepoint = """
-	
-<server_side/>
-
-<client_side>
-	<n_groups>1</n_groups>					<!-- Number of groups -->
-	<group>
-		<n_clients>8910</n_clients>			<!-- Number of clients of the group -->
-		<ndata_clients>100</ndata_clients>		<!-- Number of data clients of the group -->
-		<connection_interval>60</connection_interval>	<!-- Connection interval -->	
-		<scheduling_interval>3600</scheduling_interval>	<!-- Scheduling interval -->
-		<gbw>50Mbps</gbw>				<!-- Cluster link bandwidth in bps -->
-		<glatency>7.3ms</glatency>			<!-- Cluster link latency -->
-	
-"""
-
-epilog = """
-	<db_distri>5</db_distri>			<!-- Disk speed fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
-		<da_param>0.0001</da_param>			<!-- A -->
-		<db_param>-1</db_param>				<!-- B -->
-
-		<av_distri>0</av_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
-		<aa_param>0.393</aa_param>			<!-- A -->
-		<ab_param>2.964</ab_param>			<!-- B -->
-
-		<nv_distri>2</nv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
-		<na_param>2.444</na_param>			<!-- A -->
-		<nb_param>-0.586</nb_param>			<!-- B -->
-
-		<att_projs>1</att_projs>			<!-- Number of projects attached -->
-		<gproject>
-			<pnumber>0</pnumber>			<!-- Project number -->
-			<priority>1</priority>			<!-- Project priority -->
-			<lsbw>10Gbps</lsbw>			<!-- Link bandwidth (between group and scheduling servers) -->
-			<lslatency>50us</lslatency>		<!-- Link latency (between group and scheduling servers) -->
-			<ldbw>10Gbps</ldbw>			<!-- Link bandwidth (between group and data servers) -->
-			<ldlatency>50us</latency>		<!-- Link latency (between group and data servers) -->	
-		<gproject/>	
-	<group/>
-<client_side/>
-"""
 
 different_power_hosts_with_files = {"seti":
 '''
@@ -141,6 +92,140 @@ different_power_hosts = {"lam=0.2534":
 
 }
 
+differentmemory_capacity = {
+    "lam=0.0001": '''<db_distri>5</db_distri>			<!-- Disk speed fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<da_param>0.0001</da_param>			<!-- A -->
+		<db_param>-1</db_param>				<!-- B -->''',
+        
+		 "lam=0.0005": '''<db_distri>5</db_distri>			<!-- Disk speed fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<da_param>0.0005</da_param>			<!-- A -->
+		<db_param>-1</db_param>				<!-- B -->''',
+        
+        "lam=0.0010": '''<db_distri>5</db_distri>			<!-- Disk speed fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<da_param>0.0010</da_param>			<!-- A -->
+		<db_param>-1</db_param>				<!-- B -->''',
+        
+		 
+}
+
+differen_availability = {
+    'default': '''<av_distri>0</av_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<aa_param>0.393</aa_param>			<!-- A -->
+		<ab_param>2.964</ab_param>			<!-- B -->
+        
+        <nv_distri>2</nv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<na_param>2.444</na_param>			<!-- A -->
+		<nb_param>-0.586</nb_param>			<!-- B -->
+''',
+
+'seti cluster 1': '''<av_distri>1</av_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<aa_param>0.289</aa_param>			<!-- A -->
+		<ab_param>311.711</ab_param>
+        
+        <nv_distri>8</nv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential, 8=3-phase hyperx] -->
+		<na_param>0.141,0.683,0.176</na_param>			<!-- A, devided by dots if there are many -->
+		<nb_param>0.008,37.816,1.013</nb_param>			<!-- B, devided by dots if there are many -->
+''',
+
+'seti cluster 2': '''<av_distri>1</av_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<aa_param>0.340</aa_param>			<!-- A -->
+		<ab_param>152.216</ab_param>			<!-- B -->
+        
+        <nv_distri>8</nv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential, 8=3-phase hyperx] -->
+		<na_param>0.142,0.660,0.198</na_param>			<!-- A, devided by dots if there are many -->
+		<nb_param>0.013,30.636,0.777</nb_param>			<!-- B, devided by dots if there are many -->
+''',
+
+'seti cluster 3': '''<av_distri>0</av_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<aa_param>0.431</aa_param>			<!-- A -->
+		<ab_param>1.682</ab_param>			<!-- B -->
+        
+        <nv_distri>8</nv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential, 8=3-phase hyperx] -->
+		<na_param>0.398,0.305,0.298</na_param>			<!-- A, devided by dots if there are many -->
+		<nb_param>0.031,11.566,1.322</nb_param>			<!-- B, devided by dots if there are many -->
+''',
+'seti cluster 4': '''<av_distri>1</av_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<aa_param>0.357</aa_param>			<!-- A -->
+		<ab_param>371.622</ab_param>			<!-- B -->
+        
+        <nv_distri>8</nv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential, 8=3-phase hyperx] -->
+		<na_param>0.106,0.743,0.151</na_param>			<!-- A, devided by dots if there are many -->
+		<nb_param>0.009,45.241,0.961</nb_param>			<!-- B, devided by dots if there are many -->
+''',
+'seti cluster 5': '''<av_distri>1</av_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<aa_param>0.342</aa_param>			<!-- A -->
+		<ab_param>89.223</ab_param>			<!-- B -->
+        
+        <nv_distri>8</nv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential, 8=3-phase hyperx] -->
+		<na_param>0.179,0.566,0.255</na_param>			<!-- A, devided by dots if there are many -->
+		<nb_param>0.016,27.587,0.536</nb_param>			<!-- B, devided by dots if there are many -->
+''',
+
+'seti cluster 6': '''<av_distri>1</av_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<aa_param>0.357</aa_param>			<!-- A -->
+		<ab_param>43.652</ab_param>			<!-- B -->
+        
+        <nv_distri>8</nv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential, 8=3-phase hyperx] -->
+		<na_param>0.338,0.390,0.272</na_param>			<!-- A, devided by dots if there are many -->
+		<nb_param>0.029,30.121,1.069</nb_param>			<!-- B, devided by dots if there are many -->
+''',
+}
+
+group1_template = """
+<group>
+		<n_clients>8910</n_clients>			<!-- Number of clients of the group -->
+		<ndata_clients>100</ndata_clients>		<!-- Number of data clients of the group -->
+		<connection_interval>60</connection_interval>	<!-- Connection interval -->	
+		<scheduling_interval>3600</scheduling_interval>	<!-- Scheduling interval -->
+		<gbw>50Mbps</gbw>				<!-- Cluster link bandwidth in bps -->
+		<glatency>7.3ms</glatency>			<!-- Cluster link latency -->
+        
+           
+		<traces_file>/Traces/lhc/unsorted</traces_file>	<!-- Host power traces file-->
+
+		<max_speed>117.71</max_speed>			<!-- Maximum host speed in GFlops -->
+		<min_speed>0.07</min_speed>			<!-- Minumum host speed in GFlops -->
+		<pv_distri>5</pv_distri>			<!-- Speed fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<pa_param>0.0534</pa_param>			<!-- A -->
+		<pb_param>-1</pb_param>				<!-- B -->
+
+        
+        <db_distri>5</db_distri>			<!-- Disk speed fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<da_param>0.0001</da_param>			<!-- A -->
+		<db_param>-1</db_param>				<!-- B -->
+        
+        {0}
+        
+		
+
+		<att_projs>1</att_projs>			<!-- Number of projects attached -->
+		<gproject>
+			<pnumber>0</pnumber>			<!-- Project number -->
+			<priority>1</priority>			<!-- Project priority -->
+			<lsbw>10Gbps</lsbw>			<!-- Link bandwidth (between group and scheduling servers) -->
+			<lslatency>50us</lslatency>		<!-- Link latency (between group and scheduling servers) -->
+			<ldbw>10Gbps</ldbw>			<!-- Link bandwidth (between group and data servers) -->
+			<ldlatency>50us</latency>		<!-- Link latency (between group and data servers) -->	
+		<gproject/>	
+	<group/>
+"""
+
+
+file_template =  f"""
+<simulation_time>100</simulation_time>				<!-- Simulation time in hours  -->
+<warm_up_time>20</warm_up_time>				<!-- Warm up time in hours -->
+
+<!-- Server side -->
+<server_side>
+	<n_projects>1</n_projects>				<!-- Number of projects -->
+    {proj1}
+<server_side/>
+
+<client_side>
+	<n_groups>1</n_groups>					<!-- Number of groups -->
+	{group1_template}	
+<client_side/>
+"""
 
 import subprocess
 def run_in_schell(cmd: str):
@@ -148,31 +233,31 @@ def run_in_schell(cmd: str):
     try:
         result = subprocess.run(command, shell=True, check=True,
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        print(result.stderr)
         return result.stdout
     except subprocess.CalledProcessError as e:
         raise e
 
 
-key_to_look_at = ['FLOPS average:']
-SUM_PRIO = 10
-with open("result_for_diff_power.csv", "w") as fout:
-    print("expr,FLOPS", file=fout)
+experiment_with = differen_availability
 
-    for expr_num in different_power_hosts.keys():
+key_to_look_at = ['FLOPS average:']
+REPEATING_PER_CONFIG = 10
+with open("result_for_diff_availability.csv", "w") as fout:
+    print("source,FLOPS", file=fout)
+
+    for expr_num in experiment_with.keys():
+        print(expr_num)
         # form parameters file and all linked
         with open("parameters.xml", "w") as wfile:
-            print(prolog, file=wfile)
-            print(proj1, file=wfile)
-            print(middlepoint, file=wfile)
-            print(different_power_hosts[expr_num], file=wfile)
-            print(epilog, file=wfile)
+            print(file_template.format(experiment_with[expr_num]), file=wfile)
         run_in_schell("./generator")
 
 
-        # run SUM_PRIO times and save in file.
+        # run REPEATING_PER_CONFIG times and save in file.
         # in ./generator they shuffle file with host power, so it
-        # must be included here, no above.
-        for i in range(SUM_PRIO):
+        # must be included here, no above when using traces_file
+        for i in range(REPEATING_PER_CONFIG):
             print(i)
             get_macro_stat = run_in_schell("./execute")
             

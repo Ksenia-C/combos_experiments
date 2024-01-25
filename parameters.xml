@@ -46,7 +46,7 @@
 		<gbw>50Mbps</gbw>				<!-- Cluster link bandwidth in bps -->
 		<glatency>7.3ms</glatency>			<!-- Cluster link latency -->
         
-        
+           
 		<traces_file>/Traces/lhc/unsorted</traces_file>	<!-- Host power traces file-->
 
 		<max_speed>117.71</max_speed>			<!-- Maximum host speed in GFlops -->
@@ -59,14 +59,17 @@
         <db_distri>5</db_distri>			<!-- Disk speed fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
 		<da_param>0.0001</da_param>			<!-- A -->
 		<db_param>-1</db_param>				<!-- B -->
+        
+        <av_distri>1</av_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
+		<aa_param>0.357</aa_param>			<!-- A -->
+		<ab_param>43.652</ab_param>			<!-- B -->
+        
+        <nv_distri>8</nv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential, 8=3-phase hyperx] -->
+		<na_param>0.338,0.390,0.272</na_param>			<!-- A, devided by dots if there are many -->
+		<nb_param>0.029,30.121,1.069</nb_param>			<!-- B, devided by dots if there are many -->
 
-		<av_distri>0</av_distri>			<!-- Availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
-		<aa_param>0.393</aa_param>			<!-- A -->
-		<ab_param>2.964</ab_param>			<!-- B -->
-
-		<nv_distri>2</nv_distri>			<!-- Non-availability fit distribution [ran_weibull, ran_gamma, ran_lognormal, normal, hyperx, exponential] -->
-		<na_param>2.444</na_param>			<!-- A -->
-		<nb_param>-0.586</nb_param>			<!-- B -->
+        
+		
 
 		<att_projs>1</att_projs>			<!-- Number of projects attached -->
 		<gproject>
