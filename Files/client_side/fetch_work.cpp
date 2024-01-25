@@ -7,6 +7,7 @@
 #include "components/types.hpp"
 #include "components/shared.hpp"
 #include "rand.h"
+#include "result_llifetime_gathering.hpp"
 
 /*****************************************************************************/
 /* update shortfall(amount of work needed to keep 1 cpu busy during next ConnectionInterval) of client */
@@ -135,6 +136,8 @@ static int client_ask_for_work(client_t client, ProjectInstanceOnClient *proj, d
         ((reply_t)ssexecution_results->content)->result_number = proj->number_executed_task.pop();
         ((reply_t)ssexecution_results->content)->workunit = proj->workunit_executed_task.pop();
 
+        push_new_stat(((reply_t)ssexecution_results->content)->result_number, ((reply_t)ssexecution_results->content)->workunit, PassedPeriod::BeforeSendBack);
+
         // Calculate credits
         ((reply_t)ssexecution_results->content)->credits = (int32_t)((int64_t)project.job_duration / 1000000000.0 * CREDITS_CPU_S);
         // Create execution results task
@@ -256,6 +259,8 @@ static int client_ask_for_work(client_t client, ProjectInstanceOnClient *proj, d
         t->msg_task->set_flops_amount(t->duration);
         t->project = proj;
         proj->tasks_swag.push_back(*t);
+
+        push_new_stat(sswork_reply->number, sswork_reply->workunit->number, PassedPeriod::MovedToClient);
 
         // Increase the total number of tasks received
         proj->total_tasks_received++;

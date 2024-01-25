@@ -26,6 +26,7 @@
 #include "client_side/data_client.hpp"
 #include "client_side/fetch_work.hpp"
 #include "client_side/execute_task.hpp"
+#include "result_llifetime_gathering.hpp"
 
 /* Create a log channel to have nice outputs. */
 #include "xbt/asserts.h"
@@ -535,6 +536,8 @@ int validator(int argc, char *argv[])
         // Get asociated workunit
         WorkunitT *workunit = project.current_workunits.at(reply->workunit);
         workunit->nresults_received++;
+
+        push_new_stat(reply->result_number, reply->workunit, PassedPeriod::BeforeValidation);
 
         // this UB must has been solved but logging is kept just in case
         if (workunit->times.size() <= reply->result_number)
@@ -1283,4 +1286,6 @@ int main(int argc, char *argv[])
     _oclient_mutex = sg4::Mutex::create();
 
     test_all(argc, argv, e);
+
+    post_stats_work();
 }

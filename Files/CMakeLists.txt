@@ -13,6 +13,7 @@ find_package(Boost 1.45.0 COMPONENTS context serialization)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS}) 
 
+    set (CMAKE_CXX_STANDARD 20)
 
 # find_package(SimGrid REQUIRED)
     include_directories(${SimGrid_INCLUDE_DIR})
@@ -24,7 +25,7 @@ if(Boost_FOUND)
     add_executable(boinc_sim_cpp boinc.cpp rand.cpp components/scheduler.cpp
                    components/data_server.cpp components/shared.cpp
                    components/data_client_server.cpp client_side/data_client.cpp
-                   client_side/fetch_work.cpp client_side/execute_task.cpp)
+                   client_side/fetch_work.cpp client_side/execute_task.cpp result_llifetime_gathering.cpp)
     target_link_libraries(boinc_sim_cpp ${SimGrid_LIBRARY} ${Boost_LIBRARIES} yaml-cpp)
 
 endif()

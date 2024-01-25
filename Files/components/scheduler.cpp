@@ -8,6 +8,7 @@
 #include "types.hpp"
 #include "shared.hpp"
 // typedef struct ssmessage s_ssmessage_t, *ssmessage_t; // Message to data server
+#include "result_llifetime_gathering.hpp"
 
 namespace sg4 = simgrid::s4u;
 
@@ -51,17 +52,17 @@ std::vector<AssignedResult *> select_result(int project_number, request_t req)
                 break;
             }
         }
+        if (current_results_it == project.current_results.end())
+        {
+            project.wg_full->notify_all();
+            break;
+        }
+
         result = *current_results_it;
         auto next_it = current_results_it;
         next_it++;
         project.current_results.erase(current_results_it);
         current_results_it = next_it;
-
-        if (result == nullptr)
-        {
-            project.wg_full->notify_all();
-            break;
-        }
 
         // Signal work generator if number of current results is 0
         project.ncurrent_results--;
@@ -83,6 +84,7 @@ std::vector<AssignedResult *> select_result(int project_number, request_t req)
 
         unique_workunits.insert(task->workunit);
         bag_of_result.push_back(result);
+        push_new_stat(result->number, result->workunit->number, PassedPeriod::ChosenToSend);
 
         project.ssdmutex->lock();
         project.nresults_sent++;

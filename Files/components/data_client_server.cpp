@@ -11,6 +11,8 @@
 #include "types.hpp"
 #include "shared.hpp"
 
+#include "result_llifetime_gathering.hpp"
+
 /*
  *	Data client server requests function
  */
@@ -143,6 +145,7 @@ int data_client_server_dispatcher(int argc, char *argv[])
                     for (int i = 0; i < project.target_nresults; i++)
                     {
                         auto result = generate_result(project, workunit, 0);
+                        push_new_stat(result->number, result->workunit->number, PassedPeriod::CreatedAt);
                         {
                             std::unique_lock lock(*project.r_mutex);
                             project.current_results.push_back(result);

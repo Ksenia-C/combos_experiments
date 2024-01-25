@@ -15,6 +15,8 @@
 #include <math.h>
 #include <inttypes.h>
 
+#include "result_llifetime_gathering.hpp"
+
 #include "components/types.hpp"
 #include "components/shared.hpp"
 #include "rand.h"
@@ -182,6 +184,8 @@ int client_execute_tasks(ProjectInstanceOnClient *proj)
             client_clean_short_debt(proj->client);
 
             proj->running_task = NULL;
+            push_new_stat(task->result_number, task->workunit, PassedPeriod::Ran);
+
             free_task(task);
 
             proj->client->on = 1;
@@ -375,6 +379,9 @@ static void schedule_job(client_t client, TaskT *job)
         TaskT *task_temp = job->project->running_task;
         remains = task_temp->msg_task->get_remaining() * client->factor;
         task_temp->msg_task->cancel();
+
+        push_new_stat(task_temp->result_number, task_temp->workunit, PassedPeriod::Ran);
+
         task_temp->msg_task = sg4::Exec::init();
         task_temp->msg_task->set_name(task_temp->name);
         task_temp->msg_task->set_flops_amount(remains);
@@ -416,6 +423,8 @@ static void client_cpu_scheduling(client_t client)
 
             client_update_debt(client);      // FELIX
             client_clean_short_debt(client); // FELIX
+            push_new_stat(task->result_number, task->workunit, PassedPeriod::BeforeMissedDeadline);
+
             free_task(task);
 
             continue;
@@ -431,6 +440,8 @@ static void client_cpu_scheduling(client_t client)
 
         /* keep the task in deadline heap */
         client->deadline_missed.insert(task);
+        push_new_stat(task->result_number, task->workunit, PassedPeriod::Wait);
+
         schedule_job(client, task);
         return;
     }
@@ -468,16 +479,22 @@ static void client_cpu_scheduling(client_t client)
             task = &(*great_debt_proj->tasks_swag.begin());
             great_debt_proj->tasks_swag.pop_front();
             great_debt_proj->run_list.push_front(*task);
+
+            push_new_stat(task->result_number, task->workunit, PassedPeriod::MovedToRunable);
         }
         if (task)
         {
             if (deadline_missed(task))
             {
+                push_new_stat(task->result_number, task->workunit, PassedPeriod::BeforeMissedDeadline);
+
                 // printf(">>>>>>>>>>>> Task-2(%s)(%p) from project(%s) deadline, skip it\n", task->name, task, task->project->name);
                 free_task(task);
                 continue;
             }
             // printf("Client (%s): Scheduling task(%s)(%p) of project(%s)\n", client->name, MSG_task_get_name(task->msg_task), task, task->project->name);
+
+            push_new_stat(task->result_number, task->workunit, PassedPeriod::Wait);
 
             schedule_job(client, task);
         }
@@ -542,7 +559,14 @@ std::pair<int, int> client_main_loop(client_t client)
             notavailable += random;
 
             if (client->running_project)
+            {
                 client->running_project->thread->suspend();
+                auto task = client->running_project->running_task;
+                if (task != nullptr)
+                {
+                    push_new_stat(task->result_number, task->workunit, PassedPeriod::Ran);
+                }
+            }
 
             client->ask_for_work_mutex->lock();
             client->suspended = random;
@@ -554,7 +578,14 @@ std::pair<int, int> client_main_loop(client_t client)
             sg4::this_actor::sleep_for(random);
 
             if (client->running_project)
+            {
                 client->running_project->thread->resume();
+                auto task = client->running_project->running_task;
+                if (task != nullptr)
+                {
+                    push_new_stat(task->result_number, task->workunit, PassedPeriod::Stopped);
+                }
+            }
 
             // printf(" Cliente %s RESUME %e\n", client->name, sg4::Engine::get_clock());
         }
